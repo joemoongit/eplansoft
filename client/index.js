@@ -5,7 +5,6 @@ let coordinates = [];
 
 const mouseMoveFunction = (event) => {
   const { pageX, pageY } = event;
-  ctx.beginPath();
   ctx.lineWidth = "6";
   ctx.strokeStyle = "red";
   ctx.clearRect(0, 0, canvas.width, canvas.height);
