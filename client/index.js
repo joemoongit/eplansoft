@@ -1,24 +1,28 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-let bool = false;
+
 let coordinates = [];
+
+const mouseMoveFunction = (event) => {
+  const { pageX, pageY } = event;
+  ctx.beginPath();
+  ctx.lineWidth = "6";
+  ctx.strokeStyle = "red";
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeRect(coordinates[0], coordinates[1], pageX - coordinates[0], pageY - coordinates[1]);
+};
+
+canvas.addEventListener('mousedown', (event) => {
+  const { pageX, pageY } = event;
+  coordinates.push(pageX, pageY);
+  canvas.addEventListener('mousemove', mouseMoveFunction);
+});
 
 canvas.addEventListener('mouseup', (event) => {
   const { pageX, pageY } = event;
-  if (!bool) {
-    ctx.beginPath();
-    ctx.lineWidth = "6";
-    ctx.strokeStyle = "red";
-    ctx.fillStyle = "red";
-    ctx.fillRect(pageX + 3, pageY + 3, -6, -6);
-    coordinates.push(pageX, pageY);
-    bool = !bool;
-  } else {
-    ctx.rect(coordinates[0], coordinates[1], pageX - coordinates[0], pageY - coordinates[1]);
-    ctx.stroke();
-    coordinates.splice(0, coordinates.length);
-    bool = !bool;
-  }
+  canvas.removeEventListener('mousemove', mouseMoveFunction);
+  ctx.strokeRect(coordinates[0], coordinates[1], pageX - coordinates[0], pageY - coordinates[1]);
+  coordinates.splice(0, coordinates.length);
 });
 
 var url = './sample.pdf';
@@ -35,8 +39,10 @@ loadingTask.promise.then(function(pdf) {
     var scale = 1.5;
     var viewport = page.getViewport({scale: scale});
 
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
+    var canvaspdf = document.getElementById('pdf');
+    var context = canvaspdf.getContext('2d');
+    canvaspdf.height = viewport.height;
+    canvaspdf.width = viewport.width;
     canvas.height = viewport.height;
     canvas.width = viewport.width;
 
