@@ -14,14 +14,13 @@ const mouseMoveFunction = (event) => {
 
 canvas.addEventListener('mousedown', (event) => {
   const { pageX, pageY } = event;
-  coordinates.push(pageX, pageY);
   canvas.addEventListener('mousemove', mouseMoveFunction);
+  coordinates.push(pageX, pageY);
 });
 
 canvas.addEventListener('mouseup', (event) => {
   const { pageX, pageY } = event;
   canvas.removeEventListener('mousemove', mouseMoveFunction);
-  ctx.strokeRect(coordinates[0], coordinates[1], pageX - coordinates[0], pageY - coordinates[1]);
   coordinates.splice(0, coordinates.length);
 });
 
