@@ -3,15 +3,18 @@ const ctx = canvas.getContext('2d');
 let bool = false;
 let coordinates = [];
 
-canvas.addEventListener('click', (event) => {
+canvas.addEventListener('mouseup', (event) => {
+  const { pageX, pageY } = event;
   if (!bool) {
     ctx.beginPath();
     ctx.lineWidth = "6";
     ctx.strokeStyle = "red";
-    coordinates.push(event.pageX, event.pageY);
+    ctx.fillStyle = "red";
+    ctx.fillRect(pageX + 3, pageY + 3, -6, -6);
+    coordinates.push(pageX, pageY);
     bool = !bool;
   } else {
-    ctx.rect(coordinates[0], coordinates[1], event.pageX - coordinates[0], event.pageY - coordinates[1]);
+    ctx.rect(coordinates[0], coordinates[1], pageX - coordinates[0], pageY - coordinates[1]);
     ctx.stroke();
     coordinates.splice(0, coordinates.length);
     bool = !bool;
