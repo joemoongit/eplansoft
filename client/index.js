@@ -3,22 +3,19 @@ const ctx = canvas.getContext('2d');
 
 let coordinates = [];
 
-const mouseMoveFunction = (event) => {
-  const { pageX, pageY } = event;
+const mouseMoveFunction = ({ pageX, pageY }) => {
   ctx.lineWidth = "6";
   ctx.strokeStyle = "red";
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.strokeRect(coordinates[0], coordinates[1], pageX - coordinates[0], pageY - coordinates[1]);
 };
 
-canvas.addEventListener('mousedown', (event) => {
-  const { pageX, pageY } = event;
+canvas.addEventListener('mousedown', ({ pageX, pageY }) => {
   canvas.addEventListener('mousemove', mouseMoveFunction);
   coordinates.push(pageX, pageY);
 });
 
-canvas.addEventListener('mouseup', (event) => {
-  const { pageX, pageY } = event;
+canvas.addEventListener('mouseup', () => {
   canvas.removeEventListener('mousemove', mouseMoveFunction);
   coordinates.splice(0, coordinates.length);
 });
@@ -34,7 +31,7 @@ loadingTask.promise.then(function(pdf) {
   pdf.getPage(pageNumber).then(function(page) {
     console.log('Page loaded');
 
-    var scale = 1.5;
+    var scale = 1.0;
     var viewport = page.getViewport({scale: scale});
 
     var canvaspdf = document.getElementById('pdf');
