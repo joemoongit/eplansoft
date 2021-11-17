@@ -1,6 +1,9 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+const canvaspdf = document.getElementById('pdf');
+const context = canvaspdf.getContext('2d');
+
 let coordinates = [];
 
 const mouseMoveFunction = ({ pageX, pageY }) => {
@@ -20,9 +23,19 @@ canvas.addEventListener('mouseup', () => {
   coordinates.splice(0, coordinates.length);
 });
 
-const printButton = document.getElementById('button');
+const printButton = document.getElementById('print');
 printButton.addEventListener('click', () => {
   window.print();
+});
+
+const downloadButton = document.getElementById('download');
+downloadButton.addEventListener('click', () => {
+  const width = canvaspdf.width;
+  const height = canvaspdf.height;
+  const pdf = new jsPDF('l', 'px', [width, height]);
+  pdf.addImage(canvaspdf, 'png', 0, 0, width, height);
+  pdf.addImage(canvas, 'png', 0, 0, width, height);
+  pdf.save('final.pdf');
 });
 
 var url = './sample.pdf';
@@ -40,8 +53,6 @@ loadingTask.promise.then(function(pdf) {
     var scale = 1.0;
     var viewport = page.getViewport({scale: scale});
 
-    var canvaspdf = document.getElementById('pdf');
-    var context = canvaspdf.getContext('2d');
     canvaspdf.height = viewport.height;
     canvaspdf.width = viewport.width;
     canvas.height = viewport.height;

@@ -15,7 +15,11 @@ body {
 }
 
 @media print {
-  #button {
+  #print {
+    display: none;
+  }
+
+  #download {
     display: none;
   }
 }
